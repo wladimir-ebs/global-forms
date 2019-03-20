@@ -39,12 +39,14 @@ const withForm = options => Component =>
       this.setState({ detail: '', error: {}, loading: true });
 
       try {
-        this.onRequest && (await this.onRequest(this.state.values));
-        this.onSucces && (await this.onSucces());
+        let res = {};
+
+        this.onRequest && (res = await this.onRequest(this.state.values));
+        this.onSucces && (await this.onSucces(res));
 
         this.setState({ loading: false });
       } catch (err) {
-        this.onFail && (await this.onFail());
+        this.onFail && (await this.onFail(err));
 
         this.setState({
           detail: err.response ? err.response.detail : '',
