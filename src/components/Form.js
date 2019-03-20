@@ -35,8 +35,19 @@ class Form extends PureComponent {
           label: 'Strict',
           nomenclature: [{ id: 0, title: 'No' }, { id: 1, title: 'Yes' }],
         },
+        {
+          type: 'select',
+          target: 'country',
+          label: 'Country',
+          nomenclature: [
+            { id: 1, title: 'Moldova' },
+            { id: 2, title: 'Romania' },
+            { id: 3, title: 'Ukraine' },
+            { id: 4, title: 'Czech' },
+          ],
+        },
       ],
-      onRequest: () => {
+      onRequest: values => {
         global.console.log('request from Form component');
       },
       onSuccess: () => {
@@ -44,6 +55,9 @@ class Form extends PureComponent {
       },
       onFail: () => {
         global.console.log('in case of fail');
+      },
+      onCancel: () => {
+        global.console.log('in case of cancel');
       },
     });
   }

@@ -4,6 +4,7 @@ import { FormTarget, Loader } from './';
 
 const indexed = arr => arr.map((item, key) => ({ key, ...item }));
 
+let timer;
 const withForm = options => Component =>
   class extends PureComponent {
     state = {
@@ -19,6 +20,10 @@ const withForm = options => Component =>
     onSuccess = null;
     onFail = null;
 
+    componentWillUnmount() {
+      timer && clearTimeout(timer);
+    }
+
     onTargetChange(target, value) {
       return this.setState(({ values }) => ({
         values: {
@@ -31,17 +36,30 @@ const withForm = options => Component =>
     async onSubmit(ev) {
       ev.preventDefault();
 
-      this.setState({ detail: '', error: {}, loading: false });
+      this.setState({ detail: '', error: {}, loading: true });
 
       try {
-        this.onRequest && (await this.onRequest());
+        this.onRequest && (await this.onRequest(this.state.values));
+        this.onSucces && (await this.onSucces());
 
         this.setState({ loading: false });
       } catch (err) {
-        this.setState({ detail: '', error: {}, loading: false });
+        this.onFail && (await this.onFail());
 
-        global.console.log(err);
+        this.setState({
+          detail: err.response ? err.response.detail : '',
+          error: err.response ? err.response.data : {},
+          loading: false,
+        });
+
+        global.console.error(err);
       }
+    }
+
+    async onReset(options) {
+      await this.setState({ loading: true });
+
+      timer = setTimeout(() => this.setState({ loading: false, values: {} }), 1000);
     }
 
     initForm(options) {
@@ -63,8 +81,11 @@ const withForm = options => Component =>
 
       return (
         <Loader loading={loading}>
-          <Form onSubmit={ev => this.onSubmit(ev)}>
+          <Form onSubmit={ev => this.onSubmit(ev)} className="zh-form">
             {detail && <Alert message={detail} type="error" showIcon />}
+            <div className="zh-form-reset" onClick={() => this.onReset()} role="presentation">
+              Reset
+            </div>
 
             {indexed(fields).map(({ key, ...item }) => (
               <FormTarget
@@ -76,7 +97,10 @@ const withForm = options => Component =>
               />
             ))}
 
-            <Button htmlType="submit">Submit</Button>
+            {this.onCancel && <Button onClick={this.onCancel}>Cancel</Button>}
+            <Button htmlType="submit" type="primary">
+              Submit
+            </Button>
           </Form>
         </Loader>
       );

@@ -1,0 +1,23 @@
+.zh-form-reset {
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  text-transform: uppercase;
+  transition: 0.3s ease;
+  font-size: 10px;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.zh-form {
+  position: relative;
+}
+
+.zh-form:hover .zh-form-reset {
+  opacity: 0.3;
+}
+
+.zh-form-reset:hover {
+  opacity: 0.8 !important;
+}

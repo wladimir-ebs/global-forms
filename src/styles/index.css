@@ -7,3 +7,7 @@
 .ant-input-number {
   width: 100%;
 }
+
+.zh-form button:not(:last-child) {
+  margin-right: 15px;
+}

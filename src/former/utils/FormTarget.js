@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Input, Checkbox, InputNumber, Radio } from 'antd';
+import { Form, Input, Checkbox, InputNumber, Radio, Select } from 'antd';
+import './FormTarget.css';
 
 const FormTarget = ({ type, ...props }) => {
   if (type === 'input') {
@@ -33,6 +34,30 @@ const FormTarget = ({ type, ...props }) => {
           </Radio>
         ))}
       </Radio.Group>
+    );
+  } else if (type === 'select') {
+    return (
+      <Select
+        allowClear
+        mode={props.mode || 'default'}
+        dropdownMatchSelectWidth={false}
+        placeholder={props.placeholder || props.label}
+        value={props.value}
+        onChange={value => props.onChange(value)}
+        showSearch
+        optionFilterProp="children"
+        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+      >
+        {props.nomenclature.map(({ id, title }) => (
+          <Select.Option
+            value={id}
+            key={id}
+            style={props.nomenclature.length > 2 ? { display: 'block', marginBottom: 5 } : null}
+          >
+            {title}
+          </Select.Option>
+        ))}
+      </Select>
     );
   } else if (type === 'input-number') {
     const { min, max } = props;
