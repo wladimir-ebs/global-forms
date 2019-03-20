@@ -42,7 +42,7 @@ const withForm = options => Component =>
         let res = {};
 
         this.onRequest && (res = await this.onRequest(this.state.values));
-        this.onSucces && (await this.onSucces(res));
+        this.onSuccess && (await this.onSuccess(res));
 
         this.setState({ loading: false });
       } catch (err) {
