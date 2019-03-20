@@ -50,7 +50,7 @@ const withForm = options => Component =>
 
         this.setState({
           detail: err.response ? err.response.detail : '',
-          error: err.response ? err.response.data : {},
+          errors: err.response ? err.response.data : {},
           loading: false,
         });
 
