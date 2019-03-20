@@ -82,7 +82,10 @@ const withForm = options => Component =>
       return (
         <Loader loading={loading}>
           <Form onSubmit={ev => this.onSubmit(ev)} className="zh-form">
-            {detail && <Alert message={detail} type="error" showIcon />}
+            {detail || errors.non_field_errors ? (
+              <Alert message={detail || errors.non_field_errors} type="error" showIcon />
+            ) : null}
+
             <div className="zh-form-reset" onClick={() => this.onReset()} role="presentation">
               Reset
             </div>
