@@ -1,0 +1,9 @@
+.ant-checkbox-wrapper {
+  display: block;
+  margin-left: 0 !important;
+  margin-bottom: 5px;
+}
+
+.ant-input-number {
+  width: 100%;
+}
